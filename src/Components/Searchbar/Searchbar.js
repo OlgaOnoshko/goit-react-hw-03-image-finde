@@ -1,5 +1,9 @@
 import { Component } from "react";
 import PropTypes from "prop-types";
+import IconButton from "../IconButton/IconButton";
+import { ReactComponent as SearchIcon } from "../IconButton/search.svg";
+import { Form, Header, Input } from "./Searchbar.styled";
+// import { HiSearch } from 'react-icons/hi';
 // import { nanoid } from 'nanoid';
 
 class Searchbar extends Component {
@@ -25,13 +29,12 @@ class Searchbar extends Component {
 
   render() {
     return (
-      <header>
-        <form onSubmit={this.handleSubmit}>
-          <button type="submit">
-            <span>Search</span>
-          </button>
-
-          <input
+      <Header>
+        <Form onSubmit={this.handleSubmit}>
+          <IconButton aria-label="search-button" onClick={this.handleSubmit}>
+            <SearchIcon width="15" height="15" />
+          </IconButton>
+          <Input
             type="text"
             autoComplete="off"
             autoFocus
@@ -39,8 +42,8 @@ class Searchbar extends Component {
             value={this.state.searchField}
             onChange={this.handleSearch}
           />
-        </form>
-      </header>
+        </Form>
+      </Header>
     );
   }
 }
