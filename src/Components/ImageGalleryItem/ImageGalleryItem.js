@@ -1,11 +1,11 @@
 import React from "react";
 import { Picture } from "./ImageGalleryItem.styled";
 
-const ImageGalleryItem = ({ image, openModal }) => {
-  const { webformatURL, tags, id } = image;
+const ImageGalleryItem = ({ image, setModalImage }) => {
+  const { webformatURL, largeImageURL, tags, id } = image;
 
   return (
-    <li key={id} onClick={openModal}>
+    <li key={id} onClick={() => setModalImage(largeImageURL)}>
       <Picture src={webformatURL} alt={tags} />
     </li>
   );

@@ -4,9 +4,7 @@ export const Picture = styled.img`
   width: 100%;
   height: 260px;
 
-  /* width: 300px;
-  height: 300px; */
-  /* object-fit: cover; */
+  object-fit: cover;
 
   overflow: hidden;
   border: 1px solid gray;

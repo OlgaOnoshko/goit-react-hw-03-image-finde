@@ -49,16 +49,17 @@ class App extends Component {
     this.setState({ loading: false });
   };
 
-  // setModalImage = img => {
-  //   this.setState({ modalImage: img });
-  // }
-
   handleFormSubmit = (searchField) => {
     this.setState({ searchField });
   };
 
   toggleModal = () => {
     this.setState(({ showModal }) => ({ showModal: !showModal }));
+  };
+
+  setModalImage = (largeImageURL) => {
+    this.setState({ modalImage: largeImageURL });
+    this.toggleModal();
   };
 
   // варіант причепитись до картинки
@@ -74,32 +75,22 @@ class App extends Component {
 
   render() {
     const { images, showModal, modalImage, alt } = this.state;
-    const handleFormSubmit = this.handleFormSubmit;
-    const toggleModal = this.toggleModal;
-    const onLoadMore = this.onLoadMore;
+    const { handleFormSubmit, setModalImage, toggleModal, onLoadMore } = this;
 
     return (
       <div>
         <Searchbar onSubmit={handleFormSubmit} />
         {this.state.loading && <p>Loading...</p>}
         {this.state.images.length > 0 && (
-          <ImageGallery onClick={this.toggleModal} images={images} />
+          <ImageGallery onClick={setModalImage} images={images} />
         )}
-        {/* {this.state.images.length > 0 && this.state.images.map(image => (<ul>
-          <li key={image.id}>
-            <img src={image.webformatURL} alt={image.tags} />
-          </li>
-        </ul>))} */}
         {this.state.images.length === 0 && <p>Nothing found on request</p>}
         {this.state.images.length > 0 &&
           this.state.images.length % 12 === 0 && (
             <LoadMoreBtn onClick={onLoadMore} />
           )}
-        {/* //  onClick={ } */}
-
         {showModal && (
           <Modal onClose={toggleModal}>
-            {" "}
             src={modalImage} alt={alt}
           </Modal>
         )}
