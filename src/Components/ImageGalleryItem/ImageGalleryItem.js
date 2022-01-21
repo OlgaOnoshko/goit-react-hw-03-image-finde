@@ -2,7 +2,7 @@ import React from "react";
 import { Picture } from "./ImageGalleryItem.styled";
 
 const ImageGalleryItem = ({ image, openModal }) => {
-  const { webformatURL, largeImageURL, tags, id } = image;
+  const { webformatURL, tags, id } = image;
 
   return (
     <li key={id} onClick={openModal}>

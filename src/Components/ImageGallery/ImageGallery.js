@@ -2,15 +2,15 @@ import React from "react";
 import ImageGalleryItem from "../ImageGalleryItem/ImageGalleryItem";
 import { Gallery } from "./ImageGallery.styled";
 
-const ImageGallery = ({ images, openModal }) => {
+const ImageGallery = ({ images, toggleModal }) => {
   return (
     <Gallery>
       {images.map((image) => (
         <ImageGalleryItem
-          openModal={openModal}
+          openModal={toggleModal}
           key={image.id}
           image={image}
-          modalPic={image.largeImageURL}
+          // modalPic={image.largeImageURL}
         />
       ))}
     </Gallery>

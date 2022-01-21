@@ -18,6 +18,7 @@ class App extends Component {
     page: 1,
     loading: false,
     modalImage: "",
+    alt: "",
   };
 
   componentDidMount() {}
@@ -46,28 +47,25 @@ class App extends Component {
       });
 
     this.setState({ loading: false });
-    // if (images.length === 0) {
-    //   alert("Nothing found on request")
-    // }
-
-    // fetch(`https://pixabay.com/api/?q=${this.state.searchField}&page=${this.state.page}&key=24374201-4895b5a995aed977e23a40374&image_type=photo&orientation=horizontal&per_page=12`)
-    //   .then(result => result.json())
-    //   .then(data => data.hits)
-    //   .then(hits => this.setState(prevState => ({ images: [...prevState.images, ...hits], page: prevState.page + 1 })))
-    //     .finally(this.setState({ loading: false }))
   };
+
+  // setModalImage = img => {
+  //   this.setState({ modalImage: img });
+  // }
 
   handleFormSubmit = (searchField) => {
     this.setState({ searchField });
   };
 
-  onOpenModal = (e) => {
-    console.log(e.target);
-  };
-
   toggleModal = () => {
     this.setState(({ showModal }) => ({ showModal: !showModal }));
   };
+
+  // варіант причепитись до картинки
+  // setModalImage = (e) => {
+  //   console.log(e.target);
+  // setState
+  // };
 
   onLoadMore = () => {
     this.fetchPictures();
@@ -75,7 +73,7 @@ class App extends Component {
   };
 
   render() {
-    const { images, showModal, modalImage } = this.state;
+    const { images, showModal, modalImage, alt } = this.state;
     const handleFormSubmit = this.handleFormSubmit;
     const toggleModal = this.toggleModal;
     const onLoadMore = this.onLoadMore;
@@ -85,7 +83,7 @@ class App extends Component {
         <Searchbar onSubmit={handleFormSubmit} />
         {this.state.loading && <p>Loading...</p>}
         {this.state.images.length > 0 && (
-          <ImageGallery onClick={this.onOpenModal} images={images} />
+          <ImageGallery onClick={this.toggleModal} images={images} />
         )}
         {/* {this.state.images.length > 0 && this.state.images.map(image => (<ul>
           <li key={image.id}>
@@ -99,7 +97,12 @@ class App extends Component {
           )}
         {/* //  onClick={ } */}
 
-        {showModal && <Modal onClose={toggleModal}>img src="" alt=""</Modal>}
+        {showModal && (
+          <Modal onClose={toggleModal}>
+            {" "}
+            src={modalImage} alt={alt}
+          </Modal>
+        )}
       </div>
     );
   }
