@@ -1,14 +1,11 @@
 import { Component } from "react";
-// import axios from 'axios';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-
 import Modal from "../Modal/Modal";
 import Searchbar from "../Searchbar/Searchbar";
 import getImages from "../../service-api/getImages";
 import LoadMoreBtn from "../Button/Button";
 import ImageGallery from "../ImageGallery/ImageGallery";
-// import LoadMoreBtn from '../Button/Button'
-// import { nanoid } from "nanoid";
+import Loader from "../Loader/Loader";
 
 class App extends Component {
   state = {
@@ -31,22 +28,29 @@ class App extends Component {
   }
 
   fetchPictures = () => {
-    const { searchField, page, images } = this.state;
+    const { searchField, page } = this.state;
     this.setState({ loading: true });
     getImages(searchField, page)
       .then((res) => {
         const images = res.data.hits;
-        this.setState((prevState) => ({
-          images: [...prevState.images, ...images],
-          page: prevState.page + 1,
-        }));
+        if (searchField.trim().length) {
+          this.setState((prevState) => ({
+            images: [...prevState.images, ...images],
+            page: prevState.page + 1,
+          }));
+
+          this.scrollDown();
+        }
+        if (images.length === 0) {
+          alert(`Nothing found on request`);
+        }
       })
       .catch((err) => {
-        // console.log(`Nothing found on request`);
         return Promise.reject(err(`Nothing found on request`));
+      })
+      .then(() => {
+        this.setState({ loading: false });
       });
-
-    this.setState({ loading: false });
   };
 
   handleFormSubmit = (searchField) => {
@@ -62,15 +66,15 @@ class App extends Component {
     this.toggleModal();
   };
 
-  // варіант причепитись до картинки
-  // setModalImage = (e) => {
-  //   console.log(e.target);
-  // setState
-  // };
-
   onLoadMore = () => {
     this.fetchPictures();
-    // this.setState(prevState => ({ page: prevState.page + 1 }))
+  };
+
+  scrollDown = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
   };
 
   render() {
@@ -80,18 +84,17 @@ class App extends Component {
     return (
       <div>
         <Searchbar onSubmit={handleFormSubmit} />
-        {this.state.loading && <p>Loading...</p>}
+        {this.state.loading && <Loader />}
         {this.state.images.length > 0 && (
-          <ImageGallery onClick={setModalImage} images={images} />
+          <ImageGallery setModalImage={setModalImage} images={images} />
         )}
-        {this.state.images.length === 0 && <p>Nothing found on request</p>}
         {this.state.images.length > 0 &&
           this.state.images.length % 12 === 0 && (
             <LoadMoreBtn onClick={onLoadMore} />
           )}
         {showModal && (
           <Modal onClose={toggleModal}>
-            src={modalImage} alt={alt}
+            <img src={modalImage} alt={alt} />
           </Modal>
         )}
       </div>

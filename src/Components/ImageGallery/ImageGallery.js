@@ -1,24 +1,32 @@
 import React from "react";
+import PropTypes from "prop-types";
 import ImageGalleryItem from "../ImageGalleryItem/ImageGalleryItem";
 import { Gallery } from "./ImageGallery.styled";
 
 const ImageGallery = ({ images, setModalImage }) => {
-  console.log(images);
   return (
     <Gallery>
       {images.map((image) => (
         <ImageGalleryItem
           key={image.id}
-          alt={image.tags}
           image={image}
-          largeImageURL={image.largeImageURL}
           setModalImage={setModalImage}
-
-          // modalPic={image.largeImageURL}
         />
       ))}
     </Gallery>
   );
+};
+
+ImageGallery.propTypes = {
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+    })
+  ),
+  setModalImage: PropTypes.func.isRequired,
 };
 
 export default ImageGallery;

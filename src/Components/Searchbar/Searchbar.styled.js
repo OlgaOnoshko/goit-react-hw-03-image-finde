@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 
 export const Header = styled.header`
-  z-index: 1000;
-  position: fixed;
+  z-index: 100;
+  /* position: fixed; */
   display: flex;
   justify-content: center;
   align-items: center;
