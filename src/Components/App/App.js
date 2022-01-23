@@ -22,7 +22,10 @@ class App extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.searchField !== this.state.searchField) {
-      this.setState({ images: [] });
+      this.setState({ images: [], page: 1 });
+      this.fetchPictures();
+    }
+    if (prevState.page !== this.state.page) {
       this.fetchPictures();
     }
   }
@@ -32,13 +35,20 @@ class App extends Component {
     this.setState({ loading: true });
     getImages(searchField, page)
       .then((res) => {
-        const images = res.data.hits;
+        const images = res.data.hits.map(
+          ({ id, tags, webformatURL, largeImageURL }) => {
+            return {
+              id,
+              tags,
+              webformatURL,
+              largeImageURL,
+            };
+          }
+        );
         if (searchField.trim().length) {
           this.setState((prevState) => ({
             images: [...prevState.images, ...images],
-            page: prevState.page + 1,
           }));
-
           this.scrollDown();
         }
         if (images.length === 0) {
@@ -67,7 +77,9 @@ class App extends Component {
   };
 
   onLoadMore = () => {
-    this.fetchPictures();
+    this.setState((prevState) => ({
+      page: prevState.page + 1,
+    }));
   };
 
   scrollDown = () => {
@@ -84,14 +96,20 @@ class App extends Component {
     return (
       <div>
         <Searchbar onSubmit={handleFormSubmit} />
-        {this.state.loading && <Loader />}
+
         {this.state.images.length > 0 && (
           <ImageGallery setModalImage={setModalImage} images={images} />
         )}
-        {this.state.images.length > 0 &&
+
+        {this.state.loading ? (
+          <Loader />
+        ) : (
+          this.state.images.length > 0 &&
           this.state.images.length % 12 === 0 && (
             <LoadMoreBtn onClick={onLoadMore} />
-          )}
+          )
+        )}
+
         {showModal && (
           <Modal onClose={toggleModal}>
             <img src={modalImage} alt={alt} />
