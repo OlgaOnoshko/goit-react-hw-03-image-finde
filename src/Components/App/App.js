@@ -25,7 +25,7 @@ class App extends Component {
       this.setState({ images: [], page: 1 });
       this.fetchPictures();
     }
-    if (prevState.page !== this.state.page) {
+    if (prevState.page !== this.state.page && this.state.page !== 1) {
       this.fetchPictures();
     }
   }
@@ -49,6 +49,7 @@ class App extends Component {
           this.setState((prevState) => ({
             images: [...prevState.images, ...images],
           }));
+          console.log(this.state.images);
           this.scrollDown();
         }
         if (images.length === 0) {
