@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import IconButton from "../IconButton/IconButton";
 import { ReactComponent as SearchIcon } from "../IconButton/search.svg";
 import { Form, Header, Input } from "./Searchbar.styled";
-// import { HiSearch } from 'react-icons/hi';
-// import { nanoid } from 'nanoid';
 
 class Searchbar extends Component {
   state = {
