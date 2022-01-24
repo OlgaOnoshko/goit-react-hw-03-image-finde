@@ -18,11 +18,9 @@ class App extends Component {
     alt: "",
   };
 
-  componentDidMount() {}
-
   componentDidUpdate(prevProps, prevState) {
     if (prevState.searchField !== this.state.searchField) {
-      this.setState({ images: [], page: 1 });
+      this.setState({ images: [] });
       this.fetchPictures();
     }
     if (prevState.page !== this.state.page && this.state.page !== 1) {
@@ -65,7 +63,7 @@ class App extends Component {
   };
 
   handleFormSubmit = (searchField) => {
-    this.setState({ searchField });
+    this.setState({ searchField, page: 1 });
   };
 
   toggleModal = () => {
